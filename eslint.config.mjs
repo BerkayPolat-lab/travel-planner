@@ -1,16 +1,45 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+import pluginPrettier from "eslint-plugin-prettier";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+  {
+    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+    languageOptions: { 
+      globals: globals.browser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    plugins: {
+      prettier: pluginPrettier,
+      react: pluginReact,
+    },
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+
+    rules: {
+      ...pluginJs.configs.recommended.rules, // Standard JS rules
+      ...tseslint.configs.recommended.rules, // TypeScript rules
+      ...pluginReact.configs.recommended.rules, // React rules
+      "react/react-in-jsx-scope": "off", // Not needed in Next.js projects
+      "prettier/prettier": "error", // Ensure Prettier formatting
+      "no-console": "warn", // Warn on console.log usage
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }], // Ignore unused vars starting with _
+      "react/prop-types": "off", // Disable PropTypes enforcement (use TypeScript instead)
+    },
+  },
+  
 ];
-
-export default eslintConfig;
