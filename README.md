@@ -26,16 +26,25 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+### Running the Development Environment
+
+```bash
+npx next dev
+```
+
 ## Running ESLint 
 
-# Checking a Single File 
+### Checking a Single File 
 ```bash
 npx eslint filename.js
 ```
-# Checking an Entire Project
+### Checking an Entire Project
 ```bash
 npx eslint .
 ```
-
+### Checking and Auto-fixing Bug in the Project
+```bash
+npx eslint . --fix
+```
 
 
