@@ -1,4 +1,4 @@
-/* styles/About.module.css */
+/* styles/Page.module.css */
 .container {
     background-color: #05203C;
     display: flex;
@@ -19,14 +19,14 @@
 }
 
 .item {
+    position: relative;
     display: flex; 
     background-color: white;
     border: 1px solid white;
     border-radius: 10px;
     margin: 10px;
-    align-items: center;
+    flex-direction: column;
     width: 200px;
-    height: 50px;
 }
 
 .search {
@@ -38,16 +38,25 @@
     margin: 5px;
     border-radius: 10px;
     border: 1px solid 0361E3;
-    height: 50px;
+    height: 75px;
     width: 80px;
 }
 
 .input {
-    padding: 5px;
     color: black;
     border: none;
+    text-align: center;
+
 }
   
 .nav {
     background-color: #05203C;
+}
+
+.input_text {
+    color: #46494f;
+    border: none;
+    height: 30px;
+    margin: 5px;
+    text-align: center;
 }
