@@ -6,22 +6,16 @@ import HotelSearchForm from '../src/app/components/HotelSearchForm.tsx';
 export default function Page() {
   const [hotels, setHotels] = useState([]);
 
-  console.log("Hotels Data:", hotels); // ✅ Debugging step
-
-  // Ensure `hotels` is always an array
-  const safeHotels = Array.isArray(hotels) ? hotels : [];
-
   return (
     <>
       <HotelSearchForm setHotels={setHotels} />
 
-      {/* Display Hotel Results */}
       <div className="mt-5 p-4 bg-white rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-3">Available Hotels</h2>
         
         {safeHotels.length > 0 ? (
           <ul className="divide-y divide-gray-200">
-            {safeHotels.map((hotel, index) => (
+            {hotels.map((hotel, index) => (
               <li key={index} className="p-4 border-b">
                 <h3 className="text-lg font-semibold">{hotel.name || "Hotel Name Not Available"}</h3>
                 <p className="text-gray-600">

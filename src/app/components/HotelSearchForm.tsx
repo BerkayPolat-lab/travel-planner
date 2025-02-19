@@ -65,9 +65,6 @@ const HotelSearchForm = ({ setHotels }) => {
 
     try {
         const response = await axios.request(options);
-        console.log("Full API Response:", response.data);  // ✅ Log the full response
-        console.log("Hotels:", response.data.data.hotels);  // ✅ Log the hotels data
-        //console.log("Hotel Price:", response.data.data.hotels[0].price);  // ✅ Log the hotel name
         if (!response.data || response.data.status === false) {
             console.log("Error message:", response.data.message);  // ✅ Log the error message
         }
