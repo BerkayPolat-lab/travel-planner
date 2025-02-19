@@ -13,7 +13,7 @@ export default function Page() {
       <div className="mt-5 p-4 bg-white rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-3">Available Hotels</h2>
         
-        {safeHotels.length > 0 ? (
+        {hotels.length > 0 ? (
           <ul className="divide-y divide-gray-200">
             {hotels.map((hotel, index) => (
               <li key={index} className="p-4 border-b">
