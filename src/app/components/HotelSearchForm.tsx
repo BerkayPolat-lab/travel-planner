@@ -37,34 +37,49 @@ const HotelSearchForm = ({ setHotels }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         if (!city || !checkInDate || !checkOutDate || travelers < 1) {
             alert("Please fill in all fields.");
             return;
         }
 
-        try {
-            const accessToken = "9IsxY6798GSIejIdxuCoGPZQphC3";
-            const options = {
-                method: 'GET',
-                url: 'https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city',
-                params: {
-                    cityCode: "IST",
-                    radius: 50,
-                    radiusUnit: "KM"
-                },
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            const response = await axios.request(options);
-            setHotels(response.data.data);
-        } catch (error) {
-            console.error("Error fetching hotels:", error);
+    const options = {
+        method: 'GET',
+        url: 'https://sky-scrapper.p.rapidapi.com/api/v1/hotels/searchHotels',
+        params: {
+            entityId: '27537542',
+            checkin: '2025-02-20',
+            checkout: '2025-02-22',
+            adults: '1',
+            rooms: '1',
+            limit: '30',
+            sorting: '-relevance',
+            currency: 'USD',
+            market: 'en-US',
+        },
+        headers: {
+            'x-rapidapi-key': 'b256d1b6b9msh21d1dfbee2e3782p127990jsna0ec6b06a102',
+            'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com'
         }
     };
+
+    try {
+        const response = await axios.request(options);
+        console.log("Full API Response:", response.data);  // ✅ Log the full response
+        console.log("Hotels:", response.data.data.hotels[0].name);  // ✅ Log the hotels data
+        //console.log("Hotel Price:", response.data.data.hotels[0].price);  // ✅ Log the hotel name
+        if (!response.data || response.data.status === false) {
+            console.log("Error message:", response.data.message);  // ✅ Log the error message
+        }
+        setHotels(response.data.data.hotels[1].name);
+    } catch (error) {
+        console.error("API Request Failed:", error);
+        console.error("Error Details:", error.response?.data || error.message);
+    }
+};
+    
+    
+    
 
     return (
         <div className={styles.container}>
