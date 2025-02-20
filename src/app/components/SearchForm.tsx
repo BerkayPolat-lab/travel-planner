@@ -1,20 +1,22 @@
 "use client";
-
 import styles from '../../styles/Page.module.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/compat/router';
 
 const SearchForm = () => {
     const [from, setFrom] = useState("");
     const [resultsFrom, setResultsFrom] = useState([]);
 
-
     const [to, setTo] = useState("");
     const [resultsTo, setResultsTo] = useState([]);
   
-    const [passengers, setPassengers] = useState(0);
     const [departDate, setDepartDate] = useState("");
     const [arriveDate, setArriveDate] = useState("");
+
+    const [passengers, setPassengers] = useState(0);
+
+    const router = useRouter();
 
     // Fetching the Search Results for the Depart Field
     useEffect(() => {
@@ -48,22 +50,53 @@ const SearchForm = () => {
         return () => clearTimeout(debounce);
     }, [to]);
 
-    
-    const airportSelectFrom = (airport) => {
-        console.log(airport.IATA)
-        setFrom(airport.Name + " (" + airport.IATA + ")");
+
+    const airportSelectFrom =  (airport: { IATA: string; Name: string }) => {
+        console.log(airport.IATA);
+        setFrom(airport.IATA);
         setResultsFrom([]);
     }
 
-    const airportSelectTo = (airport) => {
-        console.log(airport.IATA)
-        setTo(airport.Name + " (" + airport.IATA + ")");
+    const airportSelectTo =  (airport: { IATA: string; Name: string }) => {
+        console.log(airport.IATA);
+        setTo(airport.IATA);
         setResultsTo([]);
     }
 
+
+    // Work in-progress...
+    //
+    //
+    const fetchFlightData = async (e: React.FormEvent<HTMLFormElement>, from: string, to: string, departDate: string, arriveDate: string, passengers: number) => {
+        console.log(from); 
+        console.log(to);
+        e.preventDefault();
+        try {
+            const response = await axios.get("http://localhost:5001/api/flights", {
+                params: {departDate, from, to, arriveDate, passengers}
+                })
+                console.log(response.data);
+            if (router) {
+                router.push({
+                    pathname: "/flight-results", // directing to the /flight-results/[query parameters page]
+                    query: {from: from, to: to, outbound_date: departDate, return_date: arriveDate, adults: passengers},
+                });
+            }
+            } catch (error) {
+                console.log("Error fetching flight data:", error);
+            }
+
+        fetchFlightData;
+    }
+    //
+    //
+    //
+
+
     return (
     <div className={styles.container}> 
-    <form className={styles.form}> 
+    {/* Flights Form */}
+    <form className={styles.form} onSubmit={(e) => fetchFlightData(e, from, to, departDate, arriveDate, passengers)}> 
         <div className={styles.item}>
             <h4 className={`font-bold text-black ${styles.input_text}`}> From </h4>
             <input
@@ -71,7 +104,7 @@ const SearchForm = () => {
                 name="from"
                 type="text"
                 value={from}
-                onChange={(e) => setFrom(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFrom(e.target.value)}
                 placeholder="Leaving from"
             />
             {resultsFrom.length > 0 && (
@@ -94,7 +127,7 @@ const SearchForm = () => {
             type="text"
             placeholder="Going to"
             value={to}
-            onChange={(e) => setTo(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTo(e.target.value)}
             className={`rounded-lg border border-white p-2 w-full ${styles.input}`}
             />
             {resultsTo.length > 0 && (
@@ -118,7 +151,10 @@ const SearchForm = () => {
           name="trip-start"
           placeholder="depart"
           value={departDate}
-          onChange={(e) => setDepartDate(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            console.log(departDate);
+            setDepartDate(e.target.value)}
+          }
           />
         </div>
         <div className={styles.item}>
@@ -130,7 +166,10 @@ const SearchForm = () => {
           id="date-arrive"
           name="date-arrive"
           value={arriveDate}
-          onChange={(e) => setArriveDate(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            console.log(arriveDate);
+            setArriveDate(e.target.value)
+          }}
           />
         </div>
         <div className={styles.item}>
@@ -140,11 +179,13 @@ const SearchForm = () => {
           type="number"
           name="passengers"
           value={passengers}
-          onChange={(e) => setPassengers(Math.max(0, parseInt(e.target.value)))}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassengers(Math.max(0, parseInt(e.target.value)))}
           />
         </div>
         <button type="submit" className={`block min-w-0 bold grow py-1.5 pr-3 pl-1 text-base text-gray-100 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 ${styles.search}`}>Search</button>
       </form>
+
+
     </div>
     )
 
