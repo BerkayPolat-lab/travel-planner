@@ -48,9 +48,9 @@ const HotelSearchForm = ({ setHotels }) => {
         url: 'https://sky-scrapper.p.rapidapi.com/api/v1/hotels/searchHotels',
         params: {
             entityId: '27537542',
-            checkin: '2025-02-20',
+            checkin: '2025-02-21',
             checkout: '2025-02-22',
-            adults: '1',
+            adults: travelers.toString(),
             rooms: '1',
             limit: '30',
             sorting: '-relevance',
@@ -98,11 +98,11 @@ const HotelSearchForm = ({ setHotels }) => {
                 </div>
                 <div className={styles.item}>
                     <h4 className="font-bold text-black">Check-in Date</h4>
-                    <input className="rounded-lg border p-2 w-full" type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} />
+                    <input className="rounded-lg border p-2 w-full" type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} min={new Date().toISOString().split("T")[0]} />
                 </div>
                 <div className={styles.item}>
                     <h4 className="font-bold text-black">Check-out Date</h4>
-                    <input className="rounded-lg border p-2 w-full" type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} />
+                    <input className="rounded-lg border p-2 w-full" type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} min={checkInDate} />
                 </div>
                 <div className={styles.item}>
                     <h4 className="font-bold text-black">Travelers</h4>
@@ -111,6 +111,7 @@ const HotelSearchForm = ({ setHotels }) => {
                 <button type="submit" className="block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 w-full">
                     Search
                 </button>
+                <div>{checkInDate}</div>
             </form>
         </div>
     );
