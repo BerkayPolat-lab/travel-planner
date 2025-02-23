@@ -30,13 +30,10 @@ app.get("/api/flights", async (req, res) => {
             return_date: arriveDate
         });
         console.log(response);
-        if (!response.ok) {
-            throw new Error(`API Error: ${response.statusText}`);
-        }
         res.json(response);
     } catch (error) {
-        console.error("Error fetching flights:", error);
-        res.status(500).json({ error: error.message });
+        console.error("Error fetching flights:", error); // Logs the actual error
+            throw new Error("API Error: " + (error.message || "Unknown Error"));
     }
 });
 

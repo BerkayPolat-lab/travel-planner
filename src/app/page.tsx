@@ -1,7 +1,7 @@
 "use client"; 
 
-import SearchForm from './components/SearchForm';
-import Navbar from './components/Navbar';
+import SearchForm from '../app/components/SearchForm';
+import Navbar from '../app/components/Navbar';
 
 export default function Page() {
 
