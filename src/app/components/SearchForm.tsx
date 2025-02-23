@@ -140,7 +140,7 @@ const SearchForm = () => {
           type="number"
           name="passengers"
           value={passengers}
-          onChange={(e) => setPassengers(Math.max(0, parseInt(e.target.value)))}
+          onChange={(e) => setPassengers(Math.max(1, parseInt(e.target.value)))}
           />
         </div>
         <button type="submit" className={`block min-w-0 bold grow py-1.5 pr-3 pl-1 text-base text-gray-100 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 ${styles.search}`}>Search</button>
