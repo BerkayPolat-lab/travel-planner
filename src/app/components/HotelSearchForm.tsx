@@ -43,13 +43,39 @@ const HotelSearchForm = ({ setHotels }) => {
             return;
         }
 
+    
+    async function getEntityId(city) {
+    const options = {
+        method: 'GET',
+        url: 'https://sky-scrapper.p.rapidapi.com/api/v1/hotels/searchDestinationOrHotel',
+        params: { query: city },
+        headers: {
+            'x-rapidapi-key': 'b256d1b6b9msh21d1dfbee2e3782p127990jsna0ec6b06a102',
+            'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await axios.request(options);
+        if (!response.data || response.data.status === false) {
+            console.log("Error message:", response.data.message);  // ✅ Log the error message
+            return null;
+        }
+        return response.data.data[0].entityId;
+    } catch (error) {
+        console.error('Error fetching entity ID:', error);
+        return null;
+    }
+}
+
+    const entityId = await getEntityId(city);
     const options = {
         method: 'GET',
         url: 'https://sky-scrapper.p.rapidapi.com/api/v1/hotels/searchHotels',
         params: {
-            entityId: '27537542',
-            checkin: '2025-02-21',
-            checkout: '2025-02-22',
+            entityId: entityId,
+            checkin: checkInDate,
+            checkout: checkOutDate,
             adults: travelers.toString(),
             rooms: '1',
             limit: '30',
@@ -64,6 +90,10 @@ const HotelSearchForm = ({ setHotels }) => {
     };
 
     try {
+        if (!entityId) {
+            console.error('City not found. Please try again.');
+            return;
+        }
         const response = await axios.request(options);
         if (!response.data || response.data.status === false) {
             console.log("Error message:", response.data.message);  // ✅ Log the error message
@@ -74,8 +104,6 @@ const HotelSearchForm = ({ setHotels }) => {
         console.error("Error Details:", error.response?.data || error.message);
     }
 };
-    
-    
     
 
     return (
@@ -111,7 +139,6 @@ const HotelSearchForm = ({ setHotels }) => {
                 <button type="submit" className="block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 w-full">
                     Search
                 </button>
-                <div>{checkInDate}</div>
             </form>
         </div>
     );
