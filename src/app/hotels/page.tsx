@@ -1,7 +1,7 @@
 "use client"; 
 
 import { useState } from 'react';
-import HotelSearchForm from '../src/app/components/HotelSearchForm.tsx';
+import HotelSearchForm from '../components/HotelSearchForm';
 
 export default function Page() {
   const [hotels, setHotels] = useState([]);
