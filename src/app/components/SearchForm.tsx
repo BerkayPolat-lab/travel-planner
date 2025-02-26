@@ -76,16 +76,15 @@ const SearchForm = () => {
             })
             localStorage.setItem("flightData", JSON.stringify(response.data));
             console.log(response.data);
-            router.push(`/flight-results?from=${from}&to=${to}&departDate=${departDate}&arriveDate=${arriveDate}&passengers=${passengers}`);
+            setTimeout(() => {
+                router.push(`/flight-results?from=${from}&to=${to}&departDate=${departDate}&arriveDate=${arriveDate}&passengers=${passengers}`);
+              }, 100);
         } catch (error) {
             console.log("Error fetching flight data:", error);
         }
 
         fetchFlightData;
     }
-    //
-    //
-    //
 
 
     return (

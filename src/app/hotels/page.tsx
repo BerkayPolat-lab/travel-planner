@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import HotelSearchForm from '../components/HotelSearchForm';
+import Navbar from '../components/Navbar';
 
 export default function Page() {
   const [hotels, setHotels] = useState([]);
 
   return (
     <>
+      <Navbar />
       <HotelSearchForm setHotels={setHotels} />
 
       <div className="mt-5 p-4 bg-white rounded-lg shadow-lg">
